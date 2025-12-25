@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Math Pulse Kids</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
+      
+      :root {
+        --c-candy-pink: #FF85B3;
+        --c-candy-blue: #70D6FF;
+        --c-candy-yellow: #FFD670;
+        --c-candy-green: #99FFD3;
+        --c-candy-violet: #B892FF;
+      }
+
+      body {
+        font-family: 'Fredoka', sans-serif;
+        background: #FFF9F2;
+        background-image: 
+          radial-gradient(#FFE5D9 1.5px, transparent 1.5px);
+        background-size: 30px 30px;
+        overflow-x: hidden;
+        color: #4A4A4A;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        /* Prevent scroll bounce on iOS */
+        position: fixed;
+        width: 100%;
+        height: 100%;
+      }
+
+      #root {
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .bg-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      .blob {
+        position: absolute;
+        filter: blur(50px);
+        opacity: 0.4;
+        z-index: -1;
+        animation: float-blob 20s infinite alternate ease-in-out;
+      }
+
+      @keyframes float-blob {
+        0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        100% { transform: translate(100px, 50px) scale(1.2) rotate(10deg); }
+      }
+
+      /* Tactile 3D Sticker Look */
+      .sticker-effect {
+        box-shadow: 
+          0 8px 0 #EAD9C8,
+          0 15px 30px rgba(0,0,0,0.08);
+        border: 4px solid white;
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      @media (min-width: 768px) {
+        .sticker-effect {
+          box-shadow: 0 12px 0 #EAD9C8, 0 20px 40px rgba(0,0,0,0.08);
+          border: 6px solid white;
+        }
+      }
+      
+      .sticker-effect:active {
+        transform: translateY(4px) scale(0.98);
+        box-shadow: 0 2px 0 #EAD9C8;
+      }
+
+      @keyframes jiggle {
+        0%, 100% { transform: rotate(-1deg) scale(1); }
+        50% { transform: rotate(1deg) scale(1.05); }
+      }
+      .animate-jiggle {
+        animation: jiggle 3s infinite ease-in-out;
+      }
+
+      @keyframes float-gentle {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+      }
+      .animate-float {
+        animation: float-gentle 4s infinite ease-in-out;
+      }
+
+      /* Speech Bubble Styling */
+      .speech-bubble {
+        position: relative;
+        background: #ffffff;
+        border-radius: 1.5rem;
+        padding: 0.75rem 1rem;
+        border: 3px solid #F3F4F6;
+        box-shadow: 0 6px 0 rgba(0,0,0,0.05);
+      }
+      @media (min-width: 768px) {
+        .speech-bubble {
+          border-radius: 2rem;
+          padding: 1rem 1.5rem;
+          border-width: 4px;
+          box-shadow: 0 10px 0 rgba(0,0,0,0.05);
+        }
+      }
+      .speech-bubble:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border: 15px solid transparent;
+        border-top-color: #ffffff;
+        border-bottom: 0;
+        border-left: 0;
+        margin-left: -7px;
+        margin-bottom: -15px;
+      }
+
+      /* Hide background decorations on very small mobile to save space */
+      @media (max-width: 480px) {
+        .bg-canvas i {
+          display: none;
+        }
+      }
+
+      .rainbow-bg {
+        background: linear-gradient(
+          90deg, 
+          #ffadad, #ffd6a5, #fdffb6, #caffbf, #9bf6ff, #a0c4ff, #bdb2ff, #ffc6ff
+        );
+        background-size: 400% 400%;
+        animation: rainbow-anim 10s linear infinite;
+      }
+
+      @keyframes rainbow-anim {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 100% 50%; }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div class="bg-canvas">
+      <div class="blob w-[300px] h-[300px] md:w-[400px] md:h-[400px] bg-[#FFADAD] left-[-10%] top-[-5%]"></div>
+      <div class="blob w-[250px] h-[250px] md:w-[350px] md:h-[350px] bg-[#9BF6FF] right-[-5%] bottom-[-5%]"></div>
+      
+      <i class="fas fa-star animate-float text-[#FFD670] opacity-30 text-4xl md:text-6xl absolute top-20 left-10"></i>
+      <i class="fas fa-heart animate-float text-[#FF85B3] opacity-30 text-3xl md:text-5xl absolute bottom-40 right-10" style="animation-delay: -1s"></i>
+      <i class="fas fa-donut animate-float text-[#B892FF] opacity-30 text-5xl md:text-7xl absolute top-40 right-20" style="animation-delay: -3s"></i>
+    </div>
+    <div id="root"></div>
+  </body>
+</html>

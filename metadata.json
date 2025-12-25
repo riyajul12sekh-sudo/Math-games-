@@ -1,0 +1,5 @@
+{
+  "name": "Math Pulse: Pro Generator Engine",
+  "description": "A high-performance mental math game featuring a robust problem generation engine, multiple game modes (Classic, Multiple Choice, Comparison), and adaptive difficulty scaling with AI-powered feedback.",
+  "requestFramePermissions": []
+}
